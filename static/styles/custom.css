@@ -1,0 +1,150 @@
+.banner{
+    width: 250px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+a{
+    width: 150px;
+    padding: 0;
+}
+
+nav{
+    
+    margin: 0;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+}
+
+li{
+    padding: 0;
+    margin: 0;
+}
+
+.navbar{
+    padding: 0;
+}
+
+.nav{
+    padding: 0;
+}
+
+.nav-link{
+    font-size: 17px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.nav-link.active{
+    color: white !important;
+    background-color: #7c8046;
+}
+
+.nav-link:hover {
+    background-color: #7c8046;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container{
+    padding: 0;
+}
+
+.box-responsive {
+    width: 100%; /* 100% por padrão */
+}
+
+/* A partir de 992px, muda para 40% */
+@media (min-width: 992px) {
+    .box-responsive {
+        width: 45%;
+    }
+}
+
+.box-responsive2 {
+    width: 100%; /* 100% por padrão */
+}
+
+/* A partir de 992px, muda para 40% */
+@media (min-width: 1200px) {
+    .box-responsive2{
+        width: 45%;
+    }
+}
+
+.loading-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+.loading-content {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+}
+
+#popup-status-icon {
+    font-size: 3rem;
+}
+
+.spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;  
+}
+/* Spinner mais fino e ajustado */
+.spinner-custom {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid transparent;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spinner-rotate 0.8s linear infinite;
+}
+
+/* Animação de rotação */
+@keyframes spinner-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Personalização do botão btn-success */
+.btn-success {
+    background-color: #7c8046;
+    border-color: #7c8046;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #6d713e; /* Cor mais escura para o hover */
+    border-color: #6d713e;
+}
+
+/* Personalização do botão btn-outline-success */
+.btn-outline-success {
+    color: #7c8046;
+    border-color: #7c8046;
+}
+
+.btn-outline-success:hover {
+    background-color: #7c8046;
+    color: white;
+    border-color: #7c8046;
+}

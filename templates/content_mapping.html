@@ -1,0 +1,166 @@
+{% block content %}
+<div class="container-sm d-flex flex-row flex-xl-row flex-column justify-content-between">
+    <div id="container-title-mappging" class="container me-4">
+        <h1>Ferramenta de mapeamento</h1>
+        <p>Nesta interface o usário poderá fazer o uso do modelo de aprendizagem de máquina e dessa forma realizar a Predição e Mapeamento da ocorrência de cintilação ionsoférica. Para isso basta seguir as insstruções ao lado.</p>
+        
+        <!-- Formulário para upload de arquivo -->
+        <form id="prediction-form" class="border p-3 mb-4 rounded" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="file" class="form-label"><h5>Escolha um arquivo (.xlsx ou .csv)</h5></label>
+                <input class="form-control" type="file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn btn-outline-success">Realizar Predição</button>
+        </form>
+
+        <div id="container-downloads" class="border p-3 mb-4 rounded d-none">
+            <a id="download-prediction" class="btn btn-success mb-3" style="width: 100%;">Download do Arquivo da Predição</a>
+            <a id="download-before-map" class="btn btn-success mb-3" style="width: 100%;">Download do Mapa antes da Predição</a>
+            <a id="download-after-map" class="btn btn-success" style="width: 100%;">Download do Mapa da Predição</a>
+        </div>
+    </div>
+    
+    <div class="card box-responsive2">
+        <div class="card-header"><h4>Instruções Básicas</h4></div>
+        <div class="card-body">
+            <ol>
+                <li>Monte o seu arquivo de dados. Encontre informações sobre a estrutura desse arquivo <a href="#">aqui.</a></li>
+                <li>Utilize o campo de arquivos para selecionar o seu arquivo criado.</li>
+                <li>Com o arquivo selecionado, clicke em "Realizar Predição" para gerar seus mapas e o arquivo das predições.</li>
+                <li>Caso deseje, pode realizar o download dos mapas e arquivo gerados clickando no link referente.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<!-- Popup de Carregamento com Mensagem -->
+<div id="loading-popup" class="loading-popup d-none">
+    <div class="loading-content">
+        <button id="close-popup" class="btn-close position-absolute top-0 end-0 mt-2 me-2" aria-label="Fechar"></button>
+        <div id="popup-status-icon" class="mb-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+        <p id="loading-message" class="mt-3">Realizando a predição...</p>
+    </div>
+</div>
+
+<div class="container-sm mt-4">
+    <!-- Iframes para os mapas -->
+    <div class=" d-flex flex-row flex-lg-row flex-column justify-content-between mt-4">
+        <div id="before-prediction-card" class="card d-none box-responsive">
+            <div class="card-header"><h3>Mapa antes da predição</h3></div>
+            <div class="card-body p-0">
+                <iframe id="before-map-frame" style="width: 100%; height: 500px; border: none; margin: 0; padding: 0;"></iframe>
+            </div>
+            <div class="card-footer text-center">
+                <a id="before-map-download" href="#" class="btn btn-link" target="_blank" style="width: 100%;">Abrir mapa em uma nova página</a>
+            </div>
+        </div>
+        
+        <div id="after-prediction-card" class="card d-none mt-4 mt-lg-0 box-responsive" >
+            <div class="card-header"><h3>Mapa da predição</h3></div>
+            <div class="card-body p-0">
+                <iframe id="after-map-frame" style="width: 100%; height: 500px; border: none; margin: 0; padding: 0;"></iframe>
+            </div>
+            <div class="card-footer text-center">
+                <a id="after-map-download" href="#" class="btn btn-link" target="_blank" style="width: 100%;">Abrir mapa em uma nova página</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Função para fechar o popup
+        function closePopup() {
+            $('#loading-popup').addClass('d-none');
+        }
+
+        // Fechar o popup ao clicar no botão de fechar ou fora do conteúdo
+        $('#close-popup').on('click', closePopup);
+        $('#loading-popup').on('click', function (e) {
+            if ($(e.target).is('#loading-popup')) closePopup();
+        });
+
+        $('#prediction-form').on('submit', function (event) {
+            event.preventDefault();
+
+            const fileInput = $('#file')[0].files[0];
+            if (!fileInput) {
+                alert('Por favor, selecione um arquivo.');
+                return;
+            }
+
+            // Mostrar o popup de carregamento e limpar mensagem anterior
+            $('#loading-message').text('Predição esta sendo realizada...');
+            $('#popup-status-icon').html(`
+                <div id="popup-status-icon" class="spinner-wrapper">
+                    <div class="spinner-custom" role="status"></div>
+                </div>
+            `);
+            $('#loading-popup').removeClass('d-none').removeClass('success');
+
+            const formData = new FormData();
+            formData.append('file', fileInput);
+
+            $.ajax({
+                url: '/tool',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Atualizar ícone e mensagem no popup
+                    $('#popup-status-icon').html(`<i class="bi bi-check-circle-fill text-success"></i>`);
+                    $('#loading-message').html(`
+                        Predição realizada com sucesso!<br>
+     
+                    `);
+
+                    $('#result-message').addClass('d-none')
+
+                    $('#container-downloads').removeClass('d-none')
+                    $('#download-before-map').attr({
+                        href: response.input_map_url,
+                        download: ''  // Forçar o download
+                    });
+
+                    $('#download-after-map').attr({
+                        href: response.output_map_url,
+                        download: ''
+                    });
+
+                    $('#download-prediction').attr({
+                        href: response.prediction_url,
+                        download: ''
+                    });
+
+                    // Atualizar os links de download nos footers
+                    $('#before-map-download').attr('href', response.input_map_url);
+                    $('#after-map-download').attr('href', response.output_map_url);
+
+                    // Carregar os mapas nos iframes
+                    $('#before-map-frame').attr('src', response.input_map_url);
+                    $('#after-map-frame').attr('src', response.output_map_url);
+
+                    // Exibir os cards
+                    $('#before-prediction-card').removeClass('d-none');
+                    $('#after-prediction-card').removeClass('d-none');
+                },
+                error: function (xhr) {
+                    $('#container-downloads').addClass('d-none')
+                    $('#popup-status-icon').html(`<i class="bi bi-x-circle-fill text-danger"></i>`);
+                    $('#loading-message').html(`
+                        Erro ao realizar a predição: ${xhr.responseJSON?.message || 'Erro desconhecido'}<br>
+                    `);
+                    // $('#result-message').removeClass('d-none')
+                    $('#before-prediction-card').addClass('d-none');
+                    $('#after-prediction-card').addClass('d-none');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

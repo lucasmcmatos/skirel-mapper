@@ -1,0 +1,9 @@
+Flask
+Flask-Cors
+pandas
+numpy
+folium
+selenium
+joblib
+werkzeug
+xgboost
