@@ -40,6 +40,66 @@
         {% endif %}
     </div>
 
+    <footer class="text-light py-4">
+        <div class="container">
+          <div class="row">
+            <!-- Coluna 1: Links Rápidos -->
+            <div class="col-md-4">
+              <h4><strong>Links Rápidos</strong></h4>
+              <ul class="list-unstyled mt-2">
+                <li class="nav-item"><a href="/" class="quick-link text-light">Home</a></li>
+                <li><a href="/tool" class="quick-link text-light">Predição & Mapeamento</a></li>
+                <li><a href="/manual" class="quick-link text-light">Manual de Uso</a></li>
+                <li><a href="/contacts" class="quick-link text-light">Contato</a></li>
+              </ul>
+            </div>
+      
+            <!-- Coluna 2: Links Relacionados -->
+            <div class="col-md-4">
+              <h4><strong>Recursos Externos</strong></h4>
+              <ul class="list-unstyled">
+                <li><strong>Cintilação Ionosférica</strong></li>
+                <li><a href="https://books.google.com.br/books?hl=pt-BR&lr=&id=3GlWQnjBQNgC&oi=fnd&pg=PP1&dq=kelley+the+earth%27s+ionosphere&ots=w6Dyri0udC&sig=UdzhBZDd2Wxippk6_5uDVl2E3Sk&redir_esc=y#v=onepage&q=kelley%20the%20earth's%20ionosphere&f=false" class="text-light">The Earth's Ionosphere: Plasma physics and electrodynamics</a></li>
+                <li><a href="https://www.swpc.noaa.gov/phenomena/ionospheric-scintillation" class="text-light">NOAA - Impactos GNSS</a></li>
+                
+                <li class="mt-2"><strong>Base de Dados</strong></li>
+                <li><a href="https://ismrquerytool.fct.unesp.br/is/index.php?lan=en" class="text-light">ISMR Query Tool</a></li>
+                <li><a href="https://ismrquerytool.fct.unesp.br/is/calibra/index.php" class="text-light">CIGALA/CALIBRA</a></li>
+                <li><a href="https://inct-gnss-navaer.fct.unesp.br/en/" class="text-light">INCT - GNSS NavAer</a></li>
+      
+                <li class="mt-2"><strong>Modelos de Predição</strong></li>
+                <li><a href="https://bdtd.ibict.br/vufind/Record/UFMA_ab88137690d8c2078897407544dce93b" class="text-light">Otávio - Predição da Cintilação Ionosférica</a></li>
+      
+                <li class="mt-2"><strong>DARTI Lab</strong></li>
+                <li><a href="#" class="text-light">Site Oficial</a></li>
+              </ul>
+            </div>
+      
+            <!-- Coluna 3: Contato & Créditos -->
+            <div class="col-md-4">
+                <h4><strong>Contato & Créditos</strong></h4>
+                <ul class="list-unstyled">
+                    <li><strong>Desenvolvedores do projeto</strong></li>
+                    <li>Lucas M. C. Matos & A. Lucas da S. Vale & João Guilherme M. Lago</li>
+                    <li class="mt-2"><strong>Orientador</strong></li>
+                    <li>Prof. Dr. Alex Oliveira Barradas Filho (PPGAERO - UFMA)</li>
+                    <li class="mt-2">📧 <strong>Email:</strong> <a href="mailto:lucas.mcm@discente.ufma.br" class="text-light">lucas.mcm@discente.ufma.br</a></li>
+                    <li class="mt-2">🔗 <strong>GitHub:</strong> <a href="https://github.com/lucasmcmatos/skirel-mapper" class="text-light">github.com/lucasmcmatos/skirel-mapper</a></li>
+                    <li class="mt-2">📜 <strong>Licença:</strong> <a href="https://github.com/lucasmcmatos/skirel-mapper/blob/main/LICENSE.txt" class="text-light">MIT License Copyright (c) 2025 Skirel Mapper</a></li>
+                </ul>
+            </div>
+          </div>
+      
+          <!-- Linha separadora -->
+          <hr class="bg-light mt-4">
+      
+          <!-- Seção de Copyright -->
+          <div class="text-center">
+            <p class="mb-0">© 2025 - Skirel Mapper | Desenvolvido por L. M. C. Matos, A. L. da S. Vale, J. G. M. Lago</p>
+          </div>
+        </div>
+    </footer>
+
     <script>
         $(document).ready(function () {
             // Função para carregar o conteúdo da página dinamicamente
@@ -55,6 +115,17 @@
             $('.nav-link').on('click', function (event) {
                 event.preventDefault(); // Evitar que a página seja recarregada
                 $('.nav-link').removeClass('active'); // Removendo a classe active de todas as outras
+                $(this).addClass('active'); // Adicionando a classe active no botão clickado
+            
+                // Função para carregamento dinamicamente
+                const url = $(this).attr('href');
+                loadContent(url);
+            });
+
+            // Atualizar o estado active ao clickar em um link
+            $('.quick-link ').on('click', function (event) {
+                event.preventDefault(); // Evitar que a página seja recarregada
+                $('.quick-link ').removeClass('active'); // Removendo a classe active de todas as outras
                 $(this).addClass('active'); // Adicionando a classe active no botão clickado
             
                 // Função para carregamento dinamicamente

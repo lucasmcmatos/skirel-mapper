@@ -148,3 +148,8 @@ li{
     color: white;
     border-color: #7c8046;
 }
+
+footer{
+    background-color:#3b3d21;
+    border-top: #7c8046 solid 2px;
+}
